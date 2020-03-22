@@ -1,0 +1,135 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cryptpad
+  namespace: cryptpad
+spec:
+  selector:
+    matchLabels:
+      app: cryptpad
+  template:
+    metadata:
+      labels:
+        app: cryptpad
+    spec:
+      volumes:
+      - name: config
+        configMap:
+          name: config
+      - name: data
+        persistentVolumeClaim:
+          claimName: data
+      containers:
+      - name: cryptpad
+        image: docker.io/cryptpad/cryptpad:version-3.14.0
+        imagePullPolicy: Always
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 3000
+        volumeMounts:
+          - name: config
+            mountPath: /cryptpad/cfg
+          - name: data
+            mountPath: /data
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config
+  namespace: cryptpad
+data:
+  config.js: |
+    module.exports = {
+      adminEmail: 'kontakt@freifunk-duesseldorf.de',
+      archivePath: '/data/archive',
+      blobPath: '/data/blob',
+      blobStagingPath: '/data/blobstage',
+      blockPath: '/data/block',
+      filePath: '/data/store',
+      httpAddress: '::',
+      httpPort: 3000,
+      httpSafePort: 3001,
+      httpUnsafeOrigin: 'http://localhost:3000/',
+      logFeedback: false,
+      logLevel: 'info',
+      logToStdout: true,
+      pinPath: '/data/pins',
+      taskPath: '/data/tasks',
+      verbose: false,
+    };
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cryptpad
+  namespace: cryptpad
+spec:
+  selector:
+    app: cryptpad
+  ports:
+  - port: 3000
+    targetPort: 3000
+---
+kind: Ingress
+apiVersion: extensions/v1beta1
+metadata:
+  name: cryptpad
+  namespace: cryptpad
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    kubernetes.io/ingress.class: traefik
+    kubernetes.io/tls-acme: "true"
+    traefik.ingress.kubernetes.io/ssl-redirect: "true"
+spec:
+  tls:
+    - hosts:
+      - cryptpad.freifunk-duesseldorf.de
+      secretName: cryptpad-tls
+  rules:
+    - host: cryptpad.freifunk-duesseldorf.de
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: cryptpad
+              servicePort: 3000
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: data
+  namespace: cryptpad
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 3Gi
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: data
+  namespace: cryptpad
+spec:
+  capacity:
+    storage: 4Gi
+  volumeMode: Filesystem
+  accessModes:
+  - ReadWriteMany
+  persistentVolumeReclaimPolicy: Delete
+  storageClassName: local-storage
+  local:
+    path: /data/cryptpad
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - k3s1
