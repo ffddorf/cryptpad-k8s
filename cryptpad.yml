@@ -34,7 +34,7 @@ spec:
           - name: config
             mountPath: /cryptpad/cfg
           - name: data
-            mountPath: /data
+            mountPath: /cryptpad/data
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -45,11 +45,11 @@ data:
   config.js: |
     module.exports = {
       adminEmail: 'kontakt@freifunk-duesseldorf.de',
-      archivePath: '/data/archive',
-      blobPath: '/data/blob',
-      blobStagingPath: '/data/blobstage',
-      blockPath: '/data/block',
-      filePath: '/data/store',
+      archivePath: './data/archive',
+      blobPath: './data/blob',
+      blobStagingPath: './data/blobstage',
+      blockPath: './data/block',
+      filePath: './data/store',
       httpAddress: '::',
       httpPort: 3000,
       httpSafePort: 3001,
@@ -57,8 +57,8 @@ data:
       logFeedback: false,
       logLevel: 'info',
       logToStdout: true,
-      pinPath: '/data/pins',
-      taskPath: '/data/tasks',
+      pinPath: './data/pins',
+      taskPath: './data/tasks',
       verbose: false,
     };
 ---
