@@ -43,6 +43,8 @@ metadata:
   namespace: cryptpad
 data:
   config.js: |
+    var _domain = 'https://cryptpad.freifunk-duesseldorf.de';
+    var domain = ' ' + _domain;
     module.exports = {
       adminEmail: 'kontakt@freifunk-duesseldorf.de',
       archivePath: './data/archive',
@@ -52,8 +54,8 @@ data:
       filePath: './data/store',
       httpAddress: '::',
       httpPort: 3000,
-      httpSafePort: 3001,
-      httpUnsafeOrigin: 'http://localhost:3000/',
+      httpSafeOrigin: domain,
+      httpUnsafeOrigin: domain,
       logFeedback: false,
       logLevel: 'info',
       logToStdout: true,
