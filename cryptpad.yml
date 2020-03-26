@@ -43,10 +43,11 @@ metadata:
   namespace: cryptpad
 data:
   config.js: |
-    var _domain = 'https://cryptpad.freifunk-duesseldorf.de';
+    var _domain = 'https://pad.freifunk-duesseldorf.de';
     var domain = ' ' + _domain;
     module.exports = {
       adminEmail: 'kontakt@freifunk-duesseldorf.de',
+      allowSubscriptions: false,
       archivePath: './data/archive',
       blobPath: './data/blob',
       blobStagingPath: './data/blobstage',
@@ -59,7 +60,9 @@ data:
       logFeedback: false,
       logLevel: 'info',
       logToStdout: true,
+      noSubscriptionButton: true,
       pinPath: './data/pins',
+      removeDonateButton: true,
       taskPath: './data/tasks',
       verbose: false,
     };
@@ -82,17 +85,17 @@ metadata:
   name: cryptpad
   namespace: cryptpad
   annotations:
-    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    cert-manager.io/cluster-issuer: letsencrypt-prod
     kubernetes.io/ingress.class: traefik
     kubernetes.io/tls-acme: "true"
     traefik.ingress.kubernetes.io/ssl-redirect: "true"
 spec:
   tls:
     - hosts:
-        - cryptpad.freifunk-duesseldorf.de
-      secretName: cryptpad-tls
+        - pad.freifunk-duesseldorf.de
+      secretName: cryptpad-tls-prod
   rules:
-    - host: cryptpad.freifunk-duesseldorf.de
+    - host: pad.freifunk-duesseldorf.de
       http:
         paths:
           - backend:
@@ -122,7 +125,7 @@ spec:
   volumeMode: Filesystem
   accessModes:
     - ReadWriteMany
-  persistentVolumeReclaimPolicy: Delete
+  persistentVolumeReclaimPolicy: Retain
   storageClassName: local-storage
   local:
     path: /data/cryptpad
