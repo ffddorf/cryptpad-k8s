@@ -22,7 +22,7 @@ spec:
             claimName: data
       containers:
         - name: cryptpad
-          image: docker.io/cryptpad/cryptpad:version-3.14.0
+          image: docker.io/cryptpad/cryptpad:version-3.16.0
           imagePullPolicy: Always
           resources:
             limits:
