@@ -32,7 +32,7 @@ spec:
             - containerPort: 3000
           volumeMounts:
             - name: config
-              mountPath: /cryptpad/cfg
+              mountPath: /cryptpad/config
             - name: data
               mountPath: /cryptpad/data
 ---
