@@ -22,7 +22,7 @@ spec:
             claimName: cryptpad
       containers:
         - name: cryptpad
-          image: promasu/cryptpad:v3.23.0
+          image: promasu/cryptpad:v3.25.0
           imagePullPolicy: Always
           resources:
             limits:
