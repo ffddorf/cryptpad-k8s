@@ -17,9 +17,9 @@ spec:
         - name: config
           configMap:
             name: config
-        - name: data
+        - name: cryptpad
           persistentVolumeClaim:
-            claimName: data
+            claimName: cryptpad
       containers:
         - name: cryptpad
           image: promasu/cryptpad:v3.23.0
@@ -33,7 +33,7 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /cryptpad/config
-            - name: data
+            - name: cryptpad
               mountPath: /cryptpad/data
 ---
 apiVersion: v1
@@ -105,21 +105,20 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: data
+  name: cryptpad
   namespace: cryptpad
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: local-storage
   resources:
     requests:
       storage: 3Gi
+  volumeName: cryptpad
 ---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: data
-  namespace: cryptpad
+  name: cryptpad
 spec:
   capacity:
     storage: 4Gi
@@ -127,9 +126,9 @@ spec:
   accessModes:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
-  storageClassName: local-storage
+  storageClassName: local-path
   local:
-    path: /data/cryptpad
+    path: /data/cryptpad/cryptpad
   nodeAffinity:
     required:
       nodeSelectorTerms:
