@@ -22,7 +22,7 @@ spec:
             claimName: cryptpad
       containers:
         - name: cryptpad
-          image: promasu/cryptpad:v4.3.1
+          image: quay.io/ffddorf/cryptpad:4.3.1
           imagePullPolicy: Always
           resources:
             limits:
