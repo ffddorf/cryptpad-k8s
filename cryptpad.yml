@@ -79,6 +79,15 @@ spec:
     - port: 3000
       targetPort: 3000
 ---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: security
+  namespace: cryptpad
+spec:
+  headers:
+    stsSeconds: 63072000
+---
 kind: Ingress
 apiVersion: extensions/v1beta1
 metadata:
@@ -88,7 +97,9 @@ metadata:
     cert-manager.io/cluster-issuer: letsencrypt-prod
     kubernetes.io/ingress.class: traefik
     kubernetes.io/tls-acme: "true"
-    traefik.ingress.kubernetes.io/ssl-redirect: "true"
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    traefik.ingress.kubernetes.io/router.middlewares: cryptpad-security@kubernetescrd
 spec:
   tls:
     - hosts:
