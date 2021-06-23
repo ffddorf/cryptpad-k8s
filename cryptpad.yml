@@ -68,6 +68,7 @@ data:
       noSubscriptionButton: true,
       pinPath: './data/pins',
       removeDonateButton: true,
+      supportMailboxPublicKey: 'bLZQjf8j/kQnV3LLT64ROORvJjzJzz7FQRLWh1DV6B4=',
       taskPath: './data/tasks',
       verbose: false,
     };
