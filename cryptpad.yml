@@ -28,7 +28,6 @@ spec:
       containers:
         - name: cryptpad
           image: quay.io/ffddorf/cryptpad:4.7.0
-          imagePullPolicy: Always
           resources:
             limits:
               memory: "512Mi"
