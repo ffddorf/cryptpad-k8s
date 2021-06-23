@@ -48,6 +48,9 @@ metadata:
 data:
   config.js: |
     module.exports = {
+      adminKeys: [
+        "[nomaster@pad.freifunk-duesseldorf.de/WUdnwywXbKnT6QsT6OuZXQqJOQCZwiZDz2y3492oGpw=]",
+      ],
       adminEmail: 'kontakt@freifunk-duesseldorf.de',
       allowSubscriptions: false,
       archivePath: './data/archive',
