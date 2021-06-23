@@ -47,8 +47,6 @@ metadata:
   namespace: cryptpad
 data:
   config.js: |
-    var _domain = 'https://pad.freifunk-duesseldorf.de';
-    var domain = ' ' + _domain;
     module.exports = {
       adminEmail: 'kontakt@freifunk-duesseldorf.de',
       allowSubscriptions: false,
@@ -59,8 +57,8 @@ data:
       filePath: './data/store',
       httpAddress: '::',
       httpPort: 3000,
-      httpSafeOrigin: domain,
-      httpUnsafeOrigin: domain,
+      httpSafeOrigin: 'https://cryptpad.freifunk-duesseldorf.de/',
+      httpUnsafeOrigin: 'https://pad.freifunk-duesseldorf.de/',
       logFeedback: false,
       logLevel: 'info',
       logToStdout: true,
@@ -91,6 +89,9 @@ metadata:
 spec:
   headers:
     stsSeconds: 63072000
+    customResponseHeaders:
+      cross-origin-resource-policy: cross-origin
+      cross-origin-embedder-policy: require-corp
 ---
 kind: Ingress
 apiVersion: networking.k8s.io/v1
@@ -107,9 +108,20 @@ metadata:
 spec:
   tls:
     - hosts:
+        - cryptpad.freifunk-duesseldorf.de
         - pad.freifunk-duesseldorf.de
       secretName: cryptpad-tls-prod
   rules:
+    - host: cryptpad.freifunk-duesseldorf.de
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: cryptpad
+                port:
+                  number: 3000
     - host: pad.freifunk-duesseldorf.de
       http:
         paths:
