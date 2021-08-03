@@ -27,7 +27,7 @@ spec:
             claimName: cryptpad
       containers:
         - name: cryptpad
-          image: quay.io/ffddorf/cryptpad:4.7.0
+          image: quay.io/ffddorf/cryptpad:4.9.0
           resources:
             limits:
               memory: "512Mi"
