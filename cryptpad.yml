@@ -27,7 +27,7 @@ spec:
             claimName: cryptpad
       containers:
         - name: cryptpad
-          image: quay.io/ffddorf/cryptpad:4.9.0
+          image: quay.io/ffddorf/cryptpad:4.8.0
           resources:
             limits:
               memory: "512Mi"
@@ -134,7 +134,7 @@ spec:
             backend:
               service:
                 name: cryptpad
-                port: 
+                port:
                   number: 3000
 ---
 apiVersion: v1
