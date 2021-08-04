@@ -4,16 +4,16 @@
     {
       "fileMatch": ["^version\\.txt$"],
       "matchStrings": ["^(?<currentValue>\\d+\\.\\d+\\.\\d+)"],
-      "depNameTemplate": "xwiki-labs/cryptpad",
-      "datasourceTemplate": "github-releases"
+      "depNameTemplate": "xwiki-labs/cryptpad-docker",
+      "datasourceTemplate": "github-tags"
     },
     {
       "fileMatch": ["^cryptpad\\.yml$"],
       "matchStrings": [
         "^\\s+image:\\s?quay\\.io/ffddorf/cryptpad:(?<currentValue>\\d+\\.\\d+\\.\\d+)$"
       ],
-      "depNameTemplate": "xwiki-labs/cryptpad",
-      "datasourceTemplate": "github-releases"
+      "depNameTemplate": "xwiki-labs/cryptpad-docker",
+      "datasourceTemplate": "github-tags"
     }
   ],
   "packageRules": [
